@@ -23,7 +23,7 @@ ENV LANG en_US.utf8
 
 # Download official Splunk release, verify checksum and unzip in /opt/splunk
 # Also backup etc folder, so it will be later copied to the linked volume
-RUN apt-get update && apt-get install -y wget procps fping less iptables \
+RUN apt-get update && apt-get install -y wget procps fping less iptables git-core \
     && mkdir -p ${SPLUNK_HOME} \
     && wget -qO /tmp/${SPLUNK_FILENAME} https://download.splunk.com/products/${SPLUNK_PRODUCT}/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME} \
     && wget -qO /tmp/${SPLUNK_FILENAME}.md5 https://download.splunk.com/products/${SPLUNK_PRODUCT}/releases/${SPLUNK_VERSION}/linux/${SPLUNK_FILENAME}.md5 \
@@ -32,6 +32,12 @@ RUN apt-get update && apt-get install -y wget procps fping less iptables \
     && rm /tmp/${SPLUNK_FILENAME} \
     && rm /tmp/${SPLUNK_FILENAME}.md5 \
     && apt-get purge -y --auto-remove wget 
+
+# 
+# Get splunk_apps add-ons
+#
+WORKDIR /tmp
+RUN git clone https://github.com/hobbes3/splunk_apps
 
 #
 # Copy in some Splunk configuration
