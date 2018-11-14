@@ -15,9 +15,11 @@ shell:
 	docker exec -it $(IMG) bash
 
 run:
-	docker run -t --net splunk --name $(IMG) --hostname $(IMG) \
+	docker run -d --restart=unless-stopped \
+	--net splunk --name $(IMG) --hostname $(IMG) \
 	--env SPLUNK_START_ARGS='--accept-license --seed-passwd changeme' \
-	-p 1514:1514 -p 8000:8000 -p 8088:8088 -p 8089:8089 -p 8191:8191 -p 9997:9997 -v \$(pwd)/data:/data $(IID)
+	-p 1514:1514 -p 8000:8000 -p 8088:8088 -p 8089:8089 -p 8191:8191 -p 9997:9997 \
+	-v $(PWD)/data:/data -v $(PWD):/mnt -v $(PWD)/logs:/opt/splunk/var/log  $(IID)
 
 stop:
-	docker stop $(IMG) ; docker rm $(IMG)
+	docker stop $(IMG) ; docker rm -f $(IMG)
