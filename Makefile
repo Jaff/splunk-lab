@@ -1,5 +1,5 @@
 IMG=$(shell basename $(CURDIR))
-REG=docker.tivo.com/bigeye
+REG=docker.tivo.com/splunk-lab
 IID=$(REG)/$(IMG)
 
 all:
@@ -14,7 +14,7 @@ push:
 shell:
 	docker exec -it $(IMG) bash
 
-run:
+run: build  push
 	docker run -d --restart=unless-stopped \
 	--net splunk --name $(IMG) --hostname $(IMG) \
 	--env SPLUNK_START_ARGS='--accept-license --seed-passwd changeme' \
