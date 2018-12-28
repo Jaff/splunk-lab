@@ -1,5 +1,5 @@
 IMG=$(shell basename $(CURDIR))
-REG=docker.tivo.com/splunk-lab
+REG=docker.tivo.com/mjaffe
 IID=$(REG)/$(IMG)
 
 all:
